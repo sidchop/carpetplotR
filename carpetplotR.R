@@ -80,7 +80,7 @@ make_cp <- function(Matrix, lim=lim, lengthdim=NULL, title = "") {
    image(x = 1:nrow(Matrix), 
          y = 1:ncol(Matrix),
          zlim = lim,
-         Matrix, useRaster=FALSE, 
+         Matrix, useRaster=opt$useRaster, 
          col = r,
          xlab = "Time", ylab = "Voxel",
          yaxt='n',
