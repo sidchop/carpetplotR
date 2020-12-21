@@ -43,7 +43,9 @@ option_list = list(
    make_option(c("-d", "--downsamplefactor"), type="integer", default=1, 
                help="[Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every n'th timepoint. I would not use this yet, but if you have to dont go higher than 2 "),
    make_option(c("-s", "--imagesize"), type="integer", default=1000, 
-              help="[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size")
+              help="[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size"),
+  make_option(c("-R", "--useRaster"), type="logical", default=TRUE, 
+              help="[Optional] Use raster graphics. Speeds things up a lot, but if you are using carpetplotR on a cluster and the plots are comming out blank, set to False.")
   
 ); 
 
@@ -78,7 +80,7 @@ make_cp <- function(Matrix, lim=lim, lengthdim=NULL, title = "") {
    image(x = 1:nrow(Matrix), 
          y = 1:ncol(Matrix),
          zlim = lim,
-         Matrix, useRaster=TRUE, 
+         Matrix, useRaster=FALSE, 
          col = r,
          xlab = "Time", ylab = "Voxel",
          yaxt='n',
