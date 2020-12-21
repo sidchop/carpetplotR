@@ -1,12 +1,8 @@
 #!/usr/bin/env Rscript
 
-# Sidhant Chopra
+# Sidhant Chopra (sid.chopra@monash.edu)
 # 8/12/220
-# carpetplotR make carpet plots from fmri (.nii) data
-
-# usage: ./exampleRScript1.r -a thisisa -b hiagain
-#        ./exampleRScript1.r --avar thisisa --bvar hiagain
-
+# Please go to https://github.com/sidchop/carpetplotR for more details
 
 invisible(setwd(system("pwd", intern = T)))
 r = getOption("repos")
