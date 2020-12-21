@@ -5,10 +5,10 @@
 
 ## Installation 
 
-Either download the `carpetplotR.R` script directly this git page, or
+Either download the raw `carpetplotR.R` script directly this git page, or
 using commandline:
 
-      wget  https://github.com/sidchop/carpetplotR/blob/main/carpetplotR.R
+      wget  https://raw.githubusercontent.com/sidchop/carpetplotR/main/carpetplotR.R
 
 ## Requirements  
 
