@@ -179,9 +179,9 @@ if(random_ordering==TRUE) {
    message("Making carpetplot with random ordering.")
    
    
-   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_random_ordering.jpeg"),width = 1000, height = 1000, units = "px")}
-   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_random_ordering.png"),width = 1000, height = 1000, units = "px")}
-   if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_random_ordering.tiff"))}
+   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_random_ordering.jpeg"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_random_ordering.png"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_random_ordering.tiff"),width = opt$imagesize, height = opt$imagesize, units = "px")}
    
    
    make_cp(scale(Matrix_ds), lengthdim = lengthdim, lim = lim, title = opt$title)
