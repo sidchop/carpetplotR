@@ -1,5 +1,5 @@
 
-<img src="man/carpetplotR.gif" align="center" alt="" width="400" />  
+<img src="man/carpetplotR.gif" align="center" alt="" width="500" />  
 
 #### `CarpetplotR.R` is a commandline tool written in R, for fast and easy visualization of fMRI data using carpet plots.
 
@@ -66,7 +66,7 @@ There are lots of other options, which can be accessed by calling
     Options:
         -f FILE, --file=FILE
             [Required] fMRI file in .nii or .nii.gz format.
-     Mininal useage:
+     Minimal useage:
 
                    Rscript carpetplotR.R -f fmri_file.nii.gz
 
