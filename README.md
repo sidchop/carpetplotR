@@ -1,11 +1,11 @@
 
-<img src="man/carpetplotR.gif" align="center" alt="" width="300" />  
+<img src="man/carpetplotR.gif" align="center" alt="" width="400" />  
 
 #### `CarpetplotR.R` is a commandline tool written in R, for fast and easy visualization of fMRI data using carpet plots.
 
 ## Installation 
 
-Either download the raw `carpetplotR.R` script directly this git page, or
+Either download the `carpetplotR.R` script directly this git page, or
 using commandline:
 
       wget  https://raw.githubusercontent.com/sidchop/carpetplotR/main/carpetplotR.R
@@ -20,9 +20,9 @@ using commandline:
 ## Inputs 
 
 -   *\[Required\]* fMRI data file (.nii or .nii.gz format)
--   *\[Optional\]* Tissue mask file where Grey matter = 1, white matter
-    = 2 & csf = 3 (.nii or .nii.gz format). If you have used fmriprep to
-    process your data, this can be the
+-   *\[Recommended\]* Tissue mask file where Grey matter = 1, white
+    matter = 2 & csf = 3 (.nii or .nii.gz format). If you have used
+    fmriprep to process your data, this can be the
     `${subj}_bold_space-${template}_dseg.nii.gz` file. If you do not
     provided this mask, a brain mask will be generated which will
     include all voxels with a mean value &gt; 0.
@@ -42,7 +42,11 @@ with random voxel ordering and one with global signal ordering:
 <img src="man/sub-015c_random_ordering.jpeg" width="30%" /><img src="man/sub-015c_gs_ordering.jpeg" width="30%" />
 
 For a discussion of voxel ordering in carpetplots see
-[here](https://bmhlab.github.io/DiCER_results/).  
+[here](https://bmhlab.github.io/DiCER_results/). It is highly recommeded
+that you provide a tissue mask. If you do not, a mean mask will
+automatically be applied which will only include voxels where the mean
+signal is greater than the mean global signal. There is no guarantee
+that this mask will cover the brain well.  
 
 If a tissue mask is provided, then voxels will first be ordered by
 tissue type:  
@@ -55,6 +59,9 @@ There are lots of other options, which can be accessed by calling
 `carpetplot.R` without any options:
 
     Rscript carpetplotR.R
+
+    Usage: carpetplotR.R [options]
+
 
     Options:
         -f FILE, --file=FILE
@@ -91,7 +98,13 @@ There are lots of other options, which can be accessed by calling
             [Optional] A title that will appear at the top of the plot. 
 
         -d DOWNSAMPLEFACTOR, --downsamplefactor=DOWNSAMPLEFACTOR
-            [optional] downsample the image by a factor; WARNING: Currently this a very sime method of seleting the n'th timepoint. I would not use a downsamplefactor > 2 
+            [Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every nth timepoint. I would not use this yet, but if you have to dont go higher than 2. 
+
+        -s IMAGESIZE, --imagesize=IMAGESIZE
+            [Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size
+
+        -R USERASTER, --useRaster=USERASTER
+            [Optional] Use raster graphics. Speeds things up a lot, but if you are using carpetplotR on a cluster and the plots are comming out blank, set to False.
 
 ### Report bugs or requests
 

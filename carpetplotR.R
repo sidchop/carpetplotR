@@ -25,7 +25,7 @@ option_list = list(
                where the voxels are labelled:  1=gm, 2=wm. 3=csf. If you have run fmriprep
                you can use the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide a mask file,
                the voxels will first be sorted acording to tissue type."),
-   make_option(c("-o", "--output_filename"), type="character", default="carperplot", 
+   make_option(c("-o", "--output_filename"), type="character", default="carpetplot", 
                help='Output file path and name [default= %default].\n E.g. 
                Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"'),
    make_option(c("-r", "--ordering"), type="character", default="random, gs", 
@@ -227,9 +227,9 @@ if(gs_ordering==TRUE) {
    Matrix_ds <- Matrix[seq(from=1,to=dim(Matrix)[1],by=ds_factor), ]
    #scale (zscore)
    message("Making carpetplot with GS ordering.")
-   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_gs_ordering.jpeg"))}
-   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_gs_ordering.png"))}
-   if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_gs_ordering.tiff"))}
+   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_gs_ordering.jpeg"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_gs_ordering.png"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_gs_ordering.tiff"),width = opt$imagesize, height = opt$imagesize, units = "px")}
    
    
    make_cp(Matrix = scale(Matrix_ds), lengthdim = lengthdim, lim = lim)
