@@ -111,4 +111,4 @@ Options:
  * Still blank? Try turning off raster graphics (-R FALSE). Sometimes computing clusters dont play nice with raster graphics. 
 
 ### Report bugs or requests  
-Don't hesitate to ask for support or new features using [github issues](https://github.com/sidchop/brainconn) or email me at sid.chopra@monash.edu.
+Don't hesitate to ask for support or new features using [github issues](https://github.com/sidchop/carpetplotR) or email me at sid.chopra@monash.edu.

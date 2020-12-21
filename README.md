@@ -115,5 +115,5 @@ There are lots of other options, which can be accessed by calling
 ### Report bugs or requests
 
 Don’t hesitate to ask for support or new features using [github
-issues](https://github.com/sidchop/brainconn) or email me at
+issues](https://github.com/sidchop/carpetplotR) or email me at
 <a href="mailto:sid.chopra@monash.edu" class="email">sid.chopra@monash.edu</a>.
