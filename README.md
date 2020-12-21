@@ -106,6 +106,12 @@ There are lots of other options, which can be accessed by calling
         -R USERASTER, --useRaster=USERASTER
             [Optional] Use raster graphics. Speeds things up a lot, but if you are using carpetplotR on a cluster and the plots are comming out blank, set to False.
 
+### Troubleshooting 
+
+-   Output is a blank image? Try increasing the image size (-s 1500).
+-   Still blank? Try turning off raster graphics (-R FALSE). Sometimes
+    computing clusters dont play nice with raster graphics.
+
 ### Report bugs or requests
 
 Don’t hesitate to ask for support or new features using [github
