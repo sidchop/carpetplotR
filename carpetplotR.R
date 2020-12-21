@@ -7,6 +7,7 @@
 # usage: ./exampleRScript1.r -a thisisa -b hiagain
 #        ./exampleRScript1.r --avar thisisa --bvar hiagain
 
+
 invisible(setwd(system("pwd", intern = T)))
 r = getOption("repos")
 r["CRAN"] = "http://cran.us.r-project.org"
@@ -19,33 +20,35 @@ if(length(new.packages)) {message(paste0("Installing ", new.packages))
 invisible(sapply(list.of.packages, library, character.only = TRUE))
 
 
-
 option_list = list(
    make_option(c("-f", "--file"), type="character", default=NULL, 
-               help="fmri dataset in .nii or .nii.gz format", metavar="character"),
+               help='[Required] fMRI file in .nii or .nii.gz format.\n Mininal useage:\n
+               Rscript carpetplotR.R -f fmri_file.nii.gz'),
    make_option(c("-m", "--mask"), type="character", default="NULL", 
-               help="[Optional] Tissue mask file which matcched the dimentions of the fmri dataset
-               where 1=gm, 2=wm. 3=csf. If you have run fmriprep
-               this will be the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide this file,
-               the voxels will first be sorted acroding to tissue type.", metavar="character"),
+               help="[Optional] Tissue mask file in .nii or .nii.gz format which matches the dimentions of the fMRI file,
+               where the voxels are labelled:  1=gm, 2=wm. 3=csf. If you have run fmriprep
+               you can use the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide a mask file,
+               the voxels will first be sorted acording to tissue type."),
    make_option(c("-o", "--output_filename"), type="character", default="carperplot", 
-               help="output file path and name [default= %default]", metavar="character"),
+               help='Output file path and name [default= %default].\n E.g. 
+               Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"'),
    make_option(c("-r", "--ordering"), type="character", default="random, gs", 
-               help='Voxel ordering: random, gs (global signal) or both, e.g. -r "random, gs" [Default]', metavar="character"),
+               help='Voxel ordering: random, gs (global signal) or both.\n E.g. -r "random, gs" [Default]', metavar="character"),
    make_option(c("-g", "--gs"), type="character", default=NULL, 
-               help="a .txt file with the global signal (gs), if not provided, gs will be extracted from provided fmri", metavar="character"),
+               help="a .txt file with the global signal (gs), if not provided, gs will be extracted from provided fmri"),
    make_option(c("-i", "--image"), type="character", default="jpeg", 
-               help="image device to use: jpeg [Default], png or tiff", metavar="character"),
+               help='image device to use: "jpeg" [Default], png or tiff'),
   # make_option(c("-r", "--resample"), type="integer", default=1, 
   #               help="[optional] Resample mask to a voxel size (r by r by r) which matches the fmri dataset", metavar="integer"),
    make_option(c("-l", "--limits"), type="double", default=1.2, 
-               help="[Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale", metavar="double"),
+               help="[Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale"),
    make_option(c("-t", "--title"), type="character", default="", 
-               help="[Optional] A title that will appear at the top of the plot. ", metavar="character"),
+               help="[Optional] A title that will appear at the top of the plot. "),
    make_option(c("-d", "--downsamplefactor"), type="integer", default=1, 
-               help="[optional] downsample the image by a factor; WARNING: Currently this a very sime method of seleting the n'th timepoint. I would not use a downsamplefactor > 2 ", metavar="integer")
+               help="[optional] downsample the image by a factor; WARNING: Currently this a very sime method of seleting the n'th timepoint. I would not use a downsamplefactor > 2 ")
    
 ); 
+
 
 
 opt_parser = OptionParser(option_list=option_list);
