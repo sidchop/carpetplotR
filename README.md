@@ -1,2 +1,8 @@
-# carpetplotR
-fast and easy visualisation of fMRI data using carpet plots. 
+carpetplotR
+================
+Sidhant Chopra
+
+carpetplotR <img src="man/carpetplotR.gif" align="right" alt="" width="180" />
+=========================================================================
+fast and easy visualization of fMRI data using carpet plots. 
+
