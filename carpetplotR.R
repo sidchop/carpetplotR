@@ -41,8 +41,10 @@ option_list = list(
    make_option(c("-t", "--title"), type="character", default="", 
                help="[Optional] A title that will appear at the top of the plot. "),
    make_option(c("-d", "--downsamplefactor"), type="integer", default=1, 
-               help="[optional] downsample the image by a factor; WARNING: Currently this a very sime method of seleting the n'th timepoint. I would not use a downsamplefactor > 2 ")
-   
+               help="[Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every n'th timepoint. I would not use this yet, but if you have to dont go higher than 2 "),
+   make_option(c("-s", "--imagesize"), type="integer", default=1000, 
+              help="[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size")
+  
 ); 
 
 
@@ -167,7 +169,7 @@ if(mask == FALSE) {
    message("No tissue mask provided, using whole brain mean mask.")
    mean_mask <- rowMeans(img, dims = 3)
    message("Converting nifti to matrix.")
-   Matrix = timeseries2matrix(img = img, mask = mean_mask > 0)
+   Matrix = timeseries2matrix(img = img, mask = mean_mask > mean(mean_mask))
    message(paste0("Matrix dimentions: ", dim(Matrix)[1], " by ", dim(Matrix)[2]))
 }
 
@@ -177,8 +179,8 @@ if(random_ordering==TRUE) {
    message("Making carpetplot with random ordering.")
    
    
-   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_random_ordering.jpeg"))}
-   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_random_ordering.png"))}
+   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_random_ordering.jpeg"),width = 1000, height = 1000, units = "px")}
+   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_random_ordering.png"),width = 1000, height = 1000, units = "px")}
    if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_random_ordering.tiff"))}
    
    
