@@ -12,7 +12,7 @@ list.of.packages <- c("optparse", "RColorBrewer", "matrixStats",
                       "shape", "RNifti")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) {message(paste0("Installing ", new.packages))
-   install.packages(new.packages)}
+   install.packages(new.packages, INSTALL_opts = '--no-lock')}
 invisible(sapply(list.of.packages, library, character.only = TRUE))
 
 
