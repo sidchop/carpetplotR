@@ -1,7 +1,22 @@
 
 <img src="man/carpetplotR.gif" align="center" alt="" width="500" />  
 
-#### `CarpetplotR.R` is a commandline tool written in R, for fast and easy visualization of fMRI data using carpet plots.
+#### `CarpetplotR.R` is a commandline tool written in R, for fast and easy visualization of fMRI data quality using carpet plots.
+
+## Background 
+
+Carpetplots are becoming a increasing popular way to visualize
+subject-level fMRI scan quality. The plot visualises a matrix of
+colour-coded signal intensities, in which rows represent voxels and
+columns represent time. The order in which these voxels are displayed
+has a major effect on the visual interpretation of carpet plots. Please
+see these two papers for more details:  
+\* [Identifying and removing widespread signal deflections from fMRI
+data: Rethinking the global signal regression
+problem](https://www.sciencedirect.com/science/article/pii/S1053811920301014?via%3Dihub)
+
+-   [A simple but useful way to assess fMRI scan
+    qualities](https://www.sciencedirect.com/science/article/abs/pii/S1053811916303871)
 
 ## Installation 
 
@@ -28,7 +43,7 @@ using commandline:
     include all voxels with a mean value &gt; 0.
 -   *\[Optional\]* A text file with the global signal given as a vector.
     If you do not provide this, the global signal will be automatically
-    calulared from the provided fMRI file.
+    calculated from the provided fMRI file.
 
 ## Usage 
 
@@ -42,11 +57,12 @@ with random voxel ordering and one with global signal ordering:
 <img src="man/sub-015c_random_ordering.jpeg" width="30%" /><img src="man/sub-015c_gs_ordering.jpeg" width="30%" />
 
 For a discussion of voxel ordering in carpetplots see
-[here](https://bmhlab.github.io/DiCER_results/). It is highly recommeded
-that you provide a tissue mask. If you do not, a mean mask will
-automatically be applied which will only include voxels where the mean
-signal is greater than the mean global signal. There is no guarantee
-that this mask will cover the brain well.  
+[here](https://bmhlab.github.io/DiCER_results/).  
+
+It is highly recommended that you provide a tissue mask. If you do not,
+a mean mask will automatically be applied which will only include voxels
+where the mean signal is greater than the mean global signal. There is
+no guarantee that this mask will provide good coverage of the brain.  
 
 If a tissue mask is provided, then voxels will first be ordered by
 tissue type:  
@@ -55,10 +71,18 @@ tissue type:
 
 <img src="man/sub-015c_ts_random_ordering.jpeg" width="30%" /><img src="man/sub-015c_ts_gs_ordering.jpeg" width="30%" />
 
-There are lots of other options, which can be accessed by calling
-`carpetplot.R` without any options:
+CarpetplotR also offers hierarchical average linkage clustering on
+Euclidean distances (-r “co”). Computing this can require a lot of RAM,
+so please consider downsampling the data using the “-d” flag:  
 
-    Rscript carpetplotR.R
+    Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 6
+
+<img src="man/carpetplot_c_ordering.jpeg" width="30%" />
+
+There are lots of other options, which can be accessed by calling
+`carpetplotR.R` without any options or `Rscript carpetplotR.R --help`:
+
+    Rscript carpetplotR.R --help
 
     Usage: carpetplotR.R [options]
 
@@ -71,18 +95,21 @@ There are lots of other options, which can be accessed by calling
                    Rscript carpetplotR.R -f fmri_file.nii.gz
 
         -m MASK, --mask=MASK
-            [Optional] Tissue mask file in .nii or .nii.gz format which matches the dimentions of the fMRI file,
-                   where the voxels are labelled:  1=gm, 2=wm. 3=csf. If you have run fmriprep
+            [Recommended] Tissue mask file in .nii or .nii.gz format which matches the 3D dimentions of the fMRI file,
+                   where the voxels are labelled:  1=gm, 2=wm & 3=csf. If you have run fmriprep
                    you can use the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide a mask file,
                    the voxels will first be sorted acording to tissue type.
+     Recommended useage:
+      
+                   Rscript carpetplotR.R -f fmri_file.nii.gz -m bold_space_dseg.nii.gz
 
         -o OUTPUT_FILENAME, --output_filename=OUTPUT_FILENAME
-            Output file path and name [default= carperplot].
+            Output file path and name [default= carpetplot].
      E.g. 
-                   Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"
+                   Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/subj"
 
         -r CHARACTER, --ordering=CHARACTER
-            Voxel ordering: random, gs (global signal) or both.
+            Voxel ordering: random, gs (global signal) and or co (cluster ordering).
      E.g. -r "random, gs" [Default]
 
         -g GS, --gs=GS
@@ -98,13 +125,16 @@ There are lots of other options, which can be accessed by calling
             [Optional] A title that will appear at the top of the plot. 
 
         -d DOWNSAMPLEFACTOR, --downsamplefactor=DOWNSAMPLEFACTOR
-            [Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every nth timepoint. I would not use this yet, but if you have to dont go higher than 2. 
+            [Optional] downsample the image by a factor. Highly recommend using a factor between 6-10 when using cluster ordering (i.e. -o "co"), as it can take a lot of RAM.
 
         -s IMAGESIZE, --imagesize=IMAGESIZE
             [Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size
 
         -R USERASTER, --useRaster=USERASTER
             [Optional] Use raster graphics. Speeds things up a lot, but if you are using carpetplotR on a cluster and the plots are comming out blank, set to False.
+
+        -h, --help
+            Show this help message and exit
 
 ### Troubleshooting 
 

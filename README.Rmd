@@ -72,9 +72,9 @@ Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 6
 knitr::include_graphics("man/carpetplot_c_ordering.jpeg")
 ```
 
-There are lots of other options, which can be accessed by calling `carpetplotR.R` without any options:
+There are lots of other options, which can be accessed by calling `carpetplotR.R` without any options or `Rscript carpetplotR.R --help`:
 ```{sh, eval=FALSE}
-Rscript carpetplotR.R
+Rscript carpetplotR.R --help
 ```
 
 
@@ -90,18 +90,21 @@ Options:
                Rscript carpetplotR.R -f fmri_file.nii.gz
 
 	-m MASK, --mask=MASK
-		[Optional] Tissue mask file in .nii or .nii.gz format which matches the dimentions of the fMRI file,
-               where the voxels are labelled:  1=gm, 2=wm. 3=csf. If you have run fmriprep
+		[Recommended] Tissue mask file in .nii or .nii.gz format which matches the 3D dimentions of the fMRI file,
+               where the voxels are labelled:  1=gm, 2=wm & 3=csf. If you have run fmriprep
                you can use the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide a mask file,
                the voxels will first be sorted acording to tissue type.
+ Recommended useage:
+  
+               Rscript carpetplotR.R -f fmri_file.nii.gz -m bold_space_dseg.nii.gz
 
 	-o OUTPUT_FILENAME, --output_filename=OUTPUT_FILENAME
-		Output file path and name [default= carperplot].
+		Output file path and name [default= carpetplot].
  E.g. 
-               Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"
+               Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/subj"
 
 	-r CHARACTER, --ordering=CHARACTER
-		Voxel ordering: random, gs (global signal) or both.
+		Voxel ordering: random, gs (global signal) and or co (cluster ordering).
  E.g. -r "random, gs" [Default]
 
 	-g GS, --gs=GS
@@ -117,13 +120,16 @@ Options:
 		[Optional] A title that will appear at the top of the plot. 
 
 	-d DOWNSAMPLEFACTOR, --downsamplefactor=DOWNSAMPLEFACTOR
-		[Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every nth timepoint. I would not use this yet, but if you have to dont go higher than 2. 
+		[Optional] downsample the image by a factor. Highly recommend using a factor between 6-10 when using cluster ordering (i.e. -o "co"), as it can take a lot of RAM.
 
 	-s IMAGESIZE, --imagesize=IMAGESIZE
 		[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size
 
 	-R USERASTER, --useRaster=USERASTER
 		[Optional] Use raster graphics. Speeds things up a lot, but if you are using carpetplotR on a cluster and the plots are comming out blank, set to False.
+
+	-h, --help
+		Show this help message and exit
 
 ```
 ### Troubleshooting \
