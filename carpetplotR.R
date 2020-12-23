@@ -18,16 +18,17 @@ invisible(sapply(list.of.packages, library, character.only = TRUE))
 
 option_list = list(
    make_option(c("-f", "--file"), type="character", default=NULL, 
-               help='[Required] fMRI file in .nii or .nii.gz format.\n Mininal useage:\n
+               help='[Required] fMRI file in .nii or .nii.gz format.\n Minimal useage:\n
                Rscript carpetplotR.R -f fmri_file.nii.gz'),
    make_option(c("-m", "--mask"), type="character", default="NULL", 
-               help="[Optional] Tissue mask file in .nii or .nii.gz format which matches the dimentions of the fMRI file,
-               where the voxels are labelled:  1=gm, 2=wm. 3=csf. If you have run fmriprep
+               help="[Recommended] Tissue mask file in .nii or .nii.gz format which matches the 3D dimentions of the fMRI file,
+               where the voxels are labelled:  1=gm, 2=wm & 3=csf. If you have run fmriprep
                you can use the '${subj}_bold_space-${template}_dseg.nii.gz' file. If you provide a mask file,
-               the voxels will first be sorted acording to tissue type."),
+               the voxels will first be sorted acording to tissue type.\n Recommended useage:\n  
+               Rscript carpetplotR.R -f fmri_file.nii.gz -m bold_space_dseg.nii.gz"),
    make_option(c("-o", "--output_filename"), type="character", default="carpetplot", 
                help='Output file path and name [default= %default].\n E.g. 
-               Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"'),
+               Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/subj"'),
    make_option(c("-r", "--ordering"), type="character", default="random, gs", 
                help='Voxel ordering: random, gs (global signal) and or co (cluster ordering).\n E.g. -r "random, gs" [Default]', metavar="character"),
    make_option(c("-g", "--gs"), type="character", default=NULL, 
@@ -41,7 +42,7 @@ option_list = list(
    make_option(c("-t", "--title"), type="character", default="", 
                help="[Optional] A title that will appear at the top of the plot. "),
    make_option(c("-d", "--downsamplefactor"), type="integer", default=1, 
-               help='[Optional] downsample the image by a factor. Highly recommend using a factor between 6-10 when using cluster ordering (-o "co"), as it can take a lot of RAM.'),
+               help='[Optional] downsample the image by a factor. Highly recommend using a factor between 6-10 when using cluster ordering (i.e. -o "co"), as it can take a lot of RAM.'),
    make_option(c("-s", "--imagesize"), type="integer", default=1000, 
               help="[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size"),
   make_option(c("-R", "--useRaster"), type="logical", default=TRUE, 
