@@ -9,7 +9,7 @@ r = getOption("repos")
 r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
 list.of.packages <- c("optparse", "RColorBrewer", "matrixStats",
-                      "shape", "RNifti")
+                      "shape", "RNifti", "stats", "parallelDist")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) {message(paste0("Installing ", new.packages))
    install.packages(new.packages, INSTALL_opts = '--no-lock')}
@@ -29,7 +29,7 @@ option_list = list(
                help='Output file path and name [default= %default].\n E.g. 
                Rscript carpetplotR.R -f fmri_file.nii.gz -o "path/to/output/"'),
    make_option(c("-r", "--ordering"), type="character", default="random, gs", 
-               help='Voxel ordering: random, gs (global signal) or both.\n E.g. -r "random, gs" [Default]', metavar="character"),
+               help='Voxel ordering: random, gs (global signal) and or co (cluster ordering).\n E.g. -r "random, gs" [Default]', metavar="character"),
    make_option(c("-g", "--gs"), type="character", default=NULL, 
                help="a .txt file with the global signal (gs), if not provided, gs will be extracted from provided fmri"),
    make_option(c("-i", "--image"), type="character", default="jpeg", 
@@ -41,7 +41,7 @@ option_list = list(
    make_option(c("-t", "--title"), type="character", default="", 
                help="[Optional] A title that will appear at the top of the plot. "),
    make_option(c("-d", "--downsamplefactor"), type="integer", default=1, 
-               help="[Optional] downsample the image by a factor; WARNING: Currently this a very simple method of just seleting every n'th timepoint. I would not use this yet, but if you have to dont go higher than 2 "),
+               help='[Optional] downsample the image by a factor. Highly recommend using a factor between 6-10 when using cluster ordering (-o "co"), as it can take a lot of RAM.'),
    make_option(c("-s", "--imagesize"), type="integer", default=1000, 
               help="[Optional] Size (height & width) of the image in pixels. Default is 1000. If the images are comming out blank, try uping the size"),
   make_option(c("-R", "--useRaster"), type="logical", default=TRUE, 
@@ -63,14 +63,18 @@ lim <- c(-opt$limits, opt$limits)
 mask <- opt$mask != "NULL"
 message("Running carpetplotR... ")
 
-random_ordering <- gs_ordering <- FALSE
-if(!is.na(grep("random",opt$ordering) || grep("gs",opt$ordering) == 1)) {
+ds_factor=opt$downsamplefactor
+
+random_ordering <- gs_ordering <- c_ordering <- FALSE
+if(!is.na(grep("random",opt$ordering) || grep("gs",opt$ordering) || grep("co",opt$ordering) == 1)) {
    if(isTRUE(grep("random",opt$ordering)==1)){message("Random ordering selected.")
       random_ordering <- TRUE}
    if(isTRUE(grep("gs",opt$ordering)==1)){message("Global signal ordering selected.")
       gs_ordering <- TRUE}
+   if(isTRUE(grep("co",opt$ordering)==1)){message("Cluster ordering selected.")
+      c_ordering <- TRUE}
 } else {
-   stop('Please select a valid voxel ordering method: e.g. -o "random", or -o "gs", or -o "random, gs" [Default]')
+   stop('Please select a valid voxel ordering method: e.g. -o "random", or -o "gs", or -0 "co" , or -o "random, gs" [Default]')
 }
 
 
@@ -136,7 +140,7 @@ timeseries2matrix <- function(img, mask) { #borrowed from ANTsR - all credit to 
    colnames(mmat) <- paste("L", labs)
    return(mmat)
 }
-ds_factor=opt$downsamplefactor
+
 
 img <- RNifti::readNifti(opt$file, internal=F)
 if(mask == TRUE) {
@@ -164,6 +168,7 @@ for (m in 2:3){
    lengthdim[m] <-  dim(matrix)[2]
    Matrix <- cbind(Matrix,matrix)
 }
+lengthdim <- floor(lengthdim/ds_factor)
 }
 
 #Make mean mask
@@ -175,9 +180,12 @@ if(mask == FALSE) {
    message(paste0("Matrix dimentions: ", dim(Matrix)[1], " by ", dim(Matrix)[2]))
 }
 
+#Downsample
+message(paste0("Downsampling voxels by a factor of ", ds_factor, "."))
+Matrix <- Matrix[,seq(from=1,to=dim(Matrix)[2],by=ds_factor)]
+message(paste0("Matrix dimentions are now: ", dim(Matrix)[1], " by ", dim(Matrix)[2]))
+
 if(random_ordering==TRUE) {
-   #Downsample - currently only taking the nth data point, should be rolling mean i think
-   Matrix_ds <- Matrix[seq(from=1,to=dim(Matrix)[1],by=ds_factor), ]
    message("Making carpetplot with random ordering.")
    
    
@@ -186,10 +194,11 @@ if(random_ordering==TRUE) {
    if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_random_ordering.tiff"),width = opt$imagesize, height = opt$imagesize, units = "px")}
    
    
-   make_cp(scale(Matrix_ds), lengthdim = lengthdim, lim = lim, title = opt$title)
+   make_cp(scale(Matrix), lengthdim = lengthdim, lim = lim, title = opt$title)
    
    invisible(dev.off())
 }
+
 
 if(gs_ordering==TRUE) {
    #extract global signal at this point 
@@ -214,7 +223,7 @@ if(gs_ordering==TRUE) {
       gmrcor_2 <- gmrcor_2 + as.numeric(length(gmrcor_1))
       gmrcor_3 <- gmrcor_3 + as.numeric(length(gmrcor_1) + length(gmrcor_2))
       
-      rank <- c(gmrcor_1, gmrcor_2, gmrcor_3)   
+      rank <- c(gmrcor_1, gmrcor_2, gmrcor_3)
    }
    
    
@@ -224,7 +233,8 @@ if(gs_ordering==TRUE) {
    }
    
    Matrix <- Matrix[,c(rank)]
-   Matrix_ds <- Matrix[seq(from=1,to=dim(Matrix)[1],by=ds_factor), ]
+   
+  
    #scale (zscore)
    message("Making carpetplot with GS ordering.")
    if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_gs_ordering.jpeg"),width = opt$imagesize, height = opt$imagesize, units = "px")}
@@ -232,9 +242,38 @@ if(gs_ordering==TRUE) {
    if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_gs_ordering.tiff"),width = opt$imagesize, height = opt$imagesize, units = "px")}
    
    
-   make_cp(Matrix = scale(Matrix_ds), lengthdim = lengthdim, lim = lim)
+   make_cp(Matrix = scale(Matrix), lengthdim = lengthdim, lim = lim)
    invisible(dev.off())
    
 }
 
+
+if(c_ordering==TRUE) {
+   message('Computing hierarchical average linkage clustering on Euclidean distances. If this crashs, or takes too long, please increase the downsampling factor e.g. "-d 8"')
+   if(mask == TRUE) {
+      corder_1 <- hclust(parallelDist::parDist(t(scale(Matrix[,c(1:lengthdim[1])])), method = "euclidean"), method = 'average')$order 
+      
+      corder_2 <- hclust(parallelDist::parDist(t(scale(Matrix[,c((lengthdim[1]+1):(lengthdim[1]+lengthdim[2]))])), method = "euclidean"), method = 'average')$order 
+      
+      corder_3 <- hclust(parallelDist::parDist(t(scale(Matrix[,c((lengthdim[1]+lengthdim[2]+1):(lengthdim[1] + 
+                                                                                                   lengthdim[2] + 
+                                                                                                   lengthdim[3]))])), method = "euclidean"), method = 'average')$order 
+      corder_2 <- corder_2 + as.numeric(length(corder_1))
+      corder_3 <- corder_3 + as.numeric(length(corder_1) + length(corder_2))
+      
+      rank <- c(corder_1, corder_2, corder_3)
+   }
+   
+   if(mask == FALSE) {
+      rank <- hclust(parallelDist::parDist(t(scale(Matrix)), method = "euclidean"), method = 'average')$order 
+   }
+   message("Making carpetplot with cluster ordering.")
+   if(opt$image == 'jpeg'){grDevices::jpeg(paste0(opt$output_filename,"_c_ordering.jpeg"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'png'){grDevices::png(paste0(opt$output_filename,"_c_ordering.png"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   if(opt$image == 'tiff'){grDevices::tiff(paste0(opt$output_filename,"_c_ordering.tiff"),width = opt$imagesize, height = opt$imagesize, units = "px")}
+   
+   make_cp(Matrix = scale(Matrix[,rank]), lengthdim = lengthdim, lim = lim)
+   invisible(dev.off())
+   
+}
 
