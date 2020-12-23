@@ -68,7 +68,7 @@ no guarantee that this mask will provide good coverage of the brain.
 If a tissue mask is provided, then voxels will first be ordered by
 tissue type:  
 
-    Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz
+    Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_dseg.nii.gz
 
 <img src="man/sub-015c_ts_random_ordering.jpeg" width="30%" /><img src="man/sub-015c_ts_gs_ordering.jpeg" width="30%" />
 

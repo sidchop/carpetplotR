@@ -54,7 +54,7 @@ It is highly recommended that you provide a tissue mask. If you do not, a mean m
 
 If a tissue mask is provided, then voxels will first be ordered by tissue type: \
 ```{sh eval=FALSE}
-Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz
+Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_dseg.nii.gz
 ```
 
 ```{r, echo = FALSE,warning=F, error=F, out.width='30%'}
