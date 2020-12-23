@@ -9,9 +9,10 @@ output: github_document
 
 ## Background \
 
-Carpetplots are becoming a increasing popular way to visualize subject-level fMRI scan quality. The plot visualises a matrix of colour-coded signal intensities, in which rows represent voxels and columns represent time. The order in which these voxels are displayed has a major effect on the visual interpretation of carpet plots. Please see these two papers for more details: \
+Carpet plots are becoming a increasing popular way to visualize subject-level fMRI scan quality. The plot visualises a matrix of colour-coded signal intensities, in which rows represent voxels and columns represent time. The order in which these voxels are displayed has a major effect on the visual interpretation of carpet plots. Please see these two papers for more details: \
+ 
  * [Identifying and removing widespread signal deflections from fMRI data: Rethinking the global signal regression problem](https://www.sciencedirect.com/science/article/pii/S1053811920301014?via%3Dihub)
-
+ 
  * [A simple but useful way to assess fMRI scan qualities](https://www.sciencedirect.com/science/article/abs/pii/S1053811916303871)
  
 
