@@ -35,22 +35,22 @@ Either download the `carpetplotR.R` script directly this git page, or using comm
  
 ## Usage \
  
- The most simple use of carpetplotR using defaults would be: \
+ You can call R scripts from a command-line terminal using the `Rscript` command. The most basic use of carpetplotR using defaults would be: \
 
 ```{sh eval=FALSE}
 Rscript  carpetplotR.R -f fmri_file.nii.gz
 ```
 
-Which would result in two carpetplot .jpeg files being generated, one with random voxel ordering and one with global signal ordering: \
+Which would by defult result in two carpet plots images (.jpeg) being generated, one with random voxel ordering and one with global signal ordering: \
 
 ```{r, echo = FALSE,warning=F, error=F, out.width='30%'}
 knitr::include_graphics("man/sub-015c_random_ordering.jpeg")
 knitr::include_graphics("man/sub-015c_gs_ordering.jpeg")
 ```
 
-For a discussion of voxel ordering in carpetplots see [here](https://bmhlab.github.io/DiCER_results/). \
+For a discussion of voxel ordering in carpet plots see [here](https://bmhlab.github.io/DiCER_results/). \
 
-It is highly recommended that you provide a tissue mask. If you do not, a mean mask will automatically be applied which will only include voxels where the mean signal is greater than the mean global signal. There is no guarantee that this mask will provide good coverage of the brain. \
+It is highly recommended that you provide a tissue mask. If you do not, a mean mask will automatically be applied which will only include all voxels where the mean signal is greater than the mean global signal. There is no guarantee that this mask will provide good coverage of the brain. \
 
 If a tissue mask is provided, then voxels will first be ordered by tissue type: \
 ```{sh eval=FALSE}
