@@ -142,6 +142,9 @@ There are lots of other options, which can be accessed by calling
 -   Output is a blank image? Try increasing the image size (-s 1500).
 -   Still blank? Try turning off raster graphics (-R FALSE). Sometimes
     computing clusters dont play nice with raster graphics.
+-   Script crashes due to low memory/RAM? Try increasing the
+    downsampling actor (e.g. -d 6)
+-   Taking too long? Try increasing the downsampling actor (e.g. -d 6)
 
 ### Report bugs or requests
 
