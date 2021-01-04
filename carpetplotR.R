@@ -35,8 +35,8 @@ option_list = list(
                help="a .txt file with the global signal (gs), if not provided, gs will be extracted from provided fmri"),
    make_option(c("-i", "--image"), type="character", default="jpeg", 
                help='image device to use: "jpeg" [Default], png or tiff'),
-  # make_option(c("-r", "--resample"), type="integer", default=1, 
-  #               help="[optional] Resample mask to a voxel size (r by r by r) which matches the fmri dataset", metavar="integer"),
+   make_option(c("-c", "--colourpalette"), type="character", default="black, white", 
+               help='Colour palette used for the carpet plot. Entered as individual colors which are combined into a continuous scale, e.g. "black, white" [Default]'),
    make_option(c("-l", "--limits"), type="double", default=1.2, 
                help="[Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale"),
    make_option(c("-t", "--title"), type="character", default="", 
@@ -65,6 +65,7 @@ mask <- opt$mask != "NULL"
 message("Running carpetplotR... ")
 
 ds_factor=opt$downsamplefactor
+colourp <- unlist(strsplit(opt$colourpalette, ","))
 
 random_ordering <- gs_ordering <- c_ordering <- FALSE
 if(!is.na(grep("random",opt$ordering) || grep("gs",opt$ordering) || grep("co",opt$ordering) == 1)) {
@@ -80,7 +81,7 @@ if(!is.na(grep("random",opt$ordering) || grep("gs",opt$ordering) || grep("co",op
 
 
 make_cp <- function(Matrix, lim=lim, lengthdim=NULL, title = "") {
-   rf <- colorRampPalette(c("black", "white"))
+   rf <- colorRampPalette(colourp)
    r <- rf(10)
    image(x = 1:nrow(Matrix), 
          y = 1:ncol(Matrix),
