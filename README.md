@@ -83,7 +83,7 @@ so please consider downsampling the data using the “-d” flag:
 
 <img src="man/carpetplot_c_ordering.jpeg" width="30%" />
 
-There are other options available such as chaning the colour palette,
+There are other options available such as changing the colour palette,
 max/min colour limits, plot title and format of output image:  
 
     Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 8 -l 3 -c "red,yellow" -i "tiff" -t "Pre-GSR Cluster Ordering sub-015" -o "sub-015_co_"

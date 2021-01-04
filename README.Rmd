@@ -73,7 +73,7 @@ Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 6
 knitr::include_graphics("man/carpetplot_c_ordering.jpeg")
 ```
 
-There are other options available such as chaning the colour palette, max/min colour limits, plot title and format of output image: \
+There are other options available such as changing the colour palette, max/min colour limits, plot title and format of output image: \
 ```{sh eval=FALSE}
 Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 8 -l 3 -c "red,yellow" -i "tiff" -t "Pre-GSR Cluster Ordering sub-015" -o "sub-015_co_"
 
