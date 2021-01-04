@@ -73,7 +73,17 @@ Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 6
 knitr::include_graphics("man/carpetplot_c_ordering.jpeg")
 ```
 
-There are lots of other options, which can be accessed by calling `carpetplotR.R` without any options or `Rscript carpetplotR.R --help`:
+There are other options available such as chaning the colour palette, max/min colour limits, plot title and format of output image: \
+```{sh eval=FALSE}
+Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 8 -l 3 -c "red,yellow" -i "tiff" -t "Pre-GSR Cluster Ordering sub-015" -o "sub-015_co_"
+
+```
+
+```{r, echo = FALSE,warning=F, error=F, out.width='30%'}
+knitr::include_graphics("man/new_col_clust.jpeg")
+```
+
+There are other options, which can be accessed by calling `Rscript carpetplotR.R` without any options or `Rscript carpetplotR.R --help`:
 ```{sh, eval=FALSE}
 Rscript carpetplotR.R --help
 ```
@@ -114,6 +124,9 @@ Options:
 	-i IMAGE, --image=IMAGE
 		image device to use: "jpeg" [Default], png or tiff
 
+	-c COLOURPALETTE, --colourpalette=COLOURPALETTE
+		Colour palette used for the carpet plot. Entered as individual colors (either name or hex) which are combined into a continuous scale, e.g. "black, white" [Default]
+
 	-l LIMITS, --limits=LIMITS
 		[Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale
 
@@ -136,8 +149,8 @@ Options:
 ### Troubleshooting \
  * Output is a blank image? Try increasing the image size (-s 1500). 
  * Still blank? Try turning off raster graphics (-R FALSE). Sometimes computing clusters dont play nice with raster graphics.
- * Script crashes due to low memory/RAM? Try increasing the downsampling actor (e.g. -d 6)
- * Taking too long? Try increasing the downsampling actor (e.g. -d 6)
+ * Script crashes due to low memory/RAM? Try increasing the downsampling factor (e.g. -d 8)
+ * Taking too long? Try increasing the downsampling factor (e.g. -d 8)
 
 ### Report bugs or requests  
 Don't hesitate to ask for support or new features using [github issues](https://github.com/sidchop/carpetplotR) or email me at sid.chopra@monash.edu.

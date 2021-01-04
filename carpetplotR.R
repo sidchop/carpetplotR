@@ -36,7 +36,7 @@ option_list = list(
    make_option(c("-i", "--image"), type="character", default="jpeg", 
                help='image device to use: "jpeg" [Default], png or tiff'),
    make_option(c("-c", "--colourpalette"), type="character", default="black, white", 
-               help='Colour palette used for the carpet plot. Entered as individual colors which are combined into a continuous scale, e.g. "black, white" [Default]'),
+               help='Colour palette used for the carpet plot. Entered as individual colors (either name or hex) which are combined into a continuous scale, e.g. "black, white" [Default]'),
    make_option(c("-l", "--limits"), type="double", default=1.2, 
                help="[Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale"),
    make_option(c("-t", "--title"), type="character", default="", 

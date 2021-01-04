@@ -48,22 +48,25 @@ using commandline:
 
 ## Usage 
 
-The most simple use of carpetplotR using defaults would be:  
+You can call R scripts from a command-line terminal using the `Rscript`
+command. The most basic use of carpetplotR using defaults would be:  
 
     Rscript  carpetplotR.R -f fmri_file.nii.gz
 
-Which would result in two carpetplot .jpeg files being generated, one
-with random voxel ordering and one with global signal ordering:  
+Which would by defult result in two carpet plots images (.jpeg) being
+generated, one with random voxel ordering and one with global signal
+ordering:  
 
 <img src="man/sub-015c_random_ordering.jpeg" width="30%" /><img src="man/sub-015c_gs_ordering.jpeg" width="30%" />
 
-For a discussion of voxel ordering in carpetplots see
+For a discussion of voxel ordering in carpet plots see
 [here](https://bmhlab.github.io/DiCER_results/).  
 
 It is highly recommended that you provide a tissue mask. If you do not,
-a mean mask will automatically be applied which will only include voxels
-where the mean signal is greater than the mean global signal. There is
-no guarantee that this mask will provide good coverage of the brain.  
+a mean mask will automatically be applied which will only include all
+voxels where the mean signal is greater than the mean global signal.
+There is no guarantee that this mask will provide good coverage of the
+brain.  
 
 If a tissue mask is provided, then voxels will first be ordered by
 tissue type:  
@@ -80,8 +83,16 @@ so please consider downsampling the data using the “-d” flag:
 
 <img src="man/carpetplot_c_ordering.jpeg" width="30%" />
 
-There are lots of other options, which can be accessed by calling
-`carpetplotR.R` without any options or `Rscript carpetplotR.R --help`:
+There are other options available such as chaning the colour palette,
+max/min colour limits, plot title and format of output image:  
+
+    Rscript  carpetplotR.R -f fmri_file.nii.gz -m mask_desg.nii.gz -r "co" -d 8 -l 3 -c "red,yellow" -i "tiff" -t "Pre-GSR Cluster Ordering sub-015" -o "sub-015_co_"
+
+<img src="man/new_col_clust.jpeg" width="30%" />
+
+There are other options, which can be accessed by calling
+`Rscript carpetplotR.R` without any options or
+`Rscript carpetplotR.R --help`:
 
     Rscript carpetplotR.R --help
 
@@ -119,6 +130,9 @@ There are lots of other options, which can be accessed by calling
         -i IMAGE, --image=IMAGE
             image device to use: "jpeg" [Default], png or tiff
 
+        -c COLOURPALETTE, --colourpalette=COLOURPALETTE
+            Colour palette used for the carpet plot. Entered as individual colors (either name or hex) which are combined into a continuous scale, e.g. "black, white" [Default]
+
         -l LIMITS, --limits=LIMITS
             [Optional] a sets a +upper and -lower z-score limit on the color bar. Default = 1.2. Stops outliers dominating colour scale
 
@@ -143,8 +157,8 @@ There are lots of other options, which can be accessed by calling
 -   Still blank? Try turning off raster graphics (-R FALSE). Sometimes
     computing clusters dont play nice with raster graphics.
 -   Script crashes due to low memory/RAM? Try increasing the
-    downsampling actor (e.g. -d 6)
--   Taking too long? Try increasing the downsampling actor (e.g. -d 6)
+    downsampling factor (e.g. -d 8)
+-   Taking too long? Try increasing the downsampling factor (e.g. -d 8)
 
 ### Report bugs or requests
 
