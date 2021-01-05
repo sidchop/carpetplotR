@@ -1,11 +1,11 @@
 
 <img src="man/carpetplotR.gif" align="center" alt="" width="500" />  
 
-#### `CarpetplotR.R` is a commandline tool written in R, for fast and easy visualization of fMRI data quality using carpet plots.
+#### `CarpetplotR.R` is a command-line tool written in R, for fast and easy visualisation of fMRI data quality using carpet plots.
 
 ## Background 
 
-Carpet plots are becoming a increasing popular way to visualize
+Carpet plots are becoming a increasing popular way to visualise
 subject-level fMRI scan quality. The plot visualises a matrix of
 colour-coded signal intensities, in which rows represent voxels and
 columns represent time. The order in which these voxels are displayed
@@ -21,8 +21,8 @@ see these two papers for more details:
 
 ## Installation 
 
-Either download the `carpetplotR.R` script directly this git page, or
-using commandline:
+Either download the `carpetplotR.R` script directly from this git page,
+or using the command-line:
 
       wget  https://raw.githubusercontent.com/sidchop/carpetplotR/main/carpetplotR.R
 
@@ -36,12 +36,12 @@ using commandline:
 ## Inputs 
 
 -   *\[Required\]* fMRI data file (.nii or .nii.gz format)
--   *\[Recommended\]* Tissue mask file where Grey matter = 1, white
+-   *\[Recommended\]* Tissue mask file where grey matter = 1, white
     matter = 2 & csf = 3 (.nii or .nii.gz format). If you have used
     fmriprep to process your data, this can be the
     `${subj}_bold_space-${template}_dseg.nii.gz` file. If you do not
-    provided this mask, a brain mask will be generated which will
-    include all voxels with a mean value &gt; 0.
+    provide this mask, a brain mask will be generated which will include
+    all voxels with a mean value &gt; 0.
 -   *\[Optional\]* A text file with the global signal given as a vector.
     If you do not provide this, the global signal will be automatically
     calculated from the provided fMRI file.
@@ -53,7 +53,7 @@ command. The most basic use of carpetplotR using defaults would be:
 
     Rscript  carpetplotR.R -f fmri_file.nii.gz
 
-Which would by defult result in two carpet plots images (.jpeg) being
+Which would by default result in two carpet plots images (.jpeg) being
 generated, one with random voxel ordering and one with global signal
 ordering:  
 
@@ -155,7 +155,7 @@ There are other options, which can be accessed by calling
 
 -   Output is a blank image? Try increasing the image size (-s 1500).
 -   Still blank? Try turning off raster graphics (-R FALSE). Sometimes
-    computing clusters dont play nice with raster graphics.
+    computing clusters don’t play nice with raster graphics.
 -   Script crashes due to low memory/RAM? Try increasing the
     downsampling factor (e.g. -d 8)
 -   Taking too long? Try increasing the downsampling factor (e.g. -d 8)
