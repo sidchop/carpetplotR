@@ -159,6 +159,10 @@ There are other options, which can be accessed by calling
 -   Script crashes due to low memory/RAM? Try increasing the
     downsampling factor (e.g. -d 8)
 -   Taking too long? Try increasing the downsampling factor (e.g. -d 8)
+-   Dependencies not installing? You might not have admin privileges to
+    the path where packages are usually installed. Try setting this
+    variable to somewhere else `export R_LIBS=/some/where/else` or the
+    current directory you are using `export R_LIBS=$PWD`.
 
 ### Report bugs or requests
 
